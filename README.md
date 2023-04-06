@@ -2,4 +2,4 @@
 
 
 #### db scheme
-![studytracker-db-scheme](https://user-images.githubusercontent.com/88002429/227877935-a688d3c1-321d-4510-9136-c9032a29c6d8.svg)
+![db](https://user-images.githubusercontent.com/88002429/230383426-7e2bbc68-7f87-4310-b509-83e220f3540f.svg)
