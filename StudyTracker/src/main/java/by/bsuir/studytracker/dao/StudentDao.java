@@ -7,10 +7,11 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface StudentDao {
-    public Student findStudentById(int id) throws DaoException;
-    public List<Student> findAllStudents() throws DaoException;
-    public void addStudent(Student student) throws DaoException;
-    public void deleteStudent(int studentId) throws DaoException;
-//    public void update(Student student);
+    Student findStudentById(int id) throws DaoException;
+    List<Student> findAllStudents() throws DaoException;
+    void addStudent(Student student) throws DaoException;
+
+    void updateStudent(Student student) throws DaoException;
+    void deleteStudent(int studentId) throws DaoException;
 
 }

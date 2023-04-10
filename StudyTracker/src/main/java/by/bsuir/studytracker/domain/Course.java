@@ -7,24 +7,23 @@ public class Course {
     private int courseId;
     private String courseName;
     private String courseDescription;
-    private Instant startDate;
-    private Instant endDate;
-    private int instructorId;
     private String courseCode;
-    private int departmentId;
-    private int courseMaterialsId;
 
-    public Course(int courseId, String courseName, String courseDescription, Instant startDate, Instant endDate,
-                  int instructorId, String courseCode, int departmentId, int courseMaterialsId) {
+    public Course(int courseId, String courseName, String courseDescription, String courseCode) {
         this.courseId = courseId;
         this.courseName = courseName;
         this.courseDescription = courseDescription;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.instructorId = instructorId;
         this.courseCode = courseCode;
-        this.departmentId = departmentId;
-        this.courseMaterialsId = courseMaterialsId;
+    }
+
+    public Course() {
+
+    }
+
+    public Course(String courseName, String courseDescription, String courseCode) {
+        this.courseName = courseName;
+        this.courseDescription = courseDescription;
+        this.courseCode = courseCode;
     }
 
     public int getCourseId() {
@@ -51,30 +50,6 @@ public class Course {
         this.courseDescription = courseDescription;
     }
 
-    public Instant getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Instant startDate) {
-        this.startDate = startDate;
-    }
-
-    public Instant getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Instant endDate) {
-        this.endDate = endDate;
-    }
-
-    public int getInstructorId() {
-        return instructorId;
-    }
-
-    public void setInstructorId(int instructorId) {
-        this.instructorId = instructorId;
-    }
-
     public String getCourseCode() {
         return courseCode;
     }
@@ -83,33 +58,30 @@ public class Course {
         this.courseCode = courseCode;
     }
 
-    public int getDepartmentId() {
-        return departmentId;
-    }
-
-    public void setDepartmentId(int departmentId) {
-        this.departmentId = departmentId;
-    }
-
-    public int getCourseMaterialsId() {
-        return courseMaterialsId;
-    }
-
-    public void setCourseMaterialsId(int courseMaterialsId) {
-        this.courseMaterialsId = courseMaterialsId;
-    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Course course)) return false;
-        return courseId == course.courseId && instructorId == course.instructorId && departmentId == course.departmentId && courseMaterialsId == course.courseMaterialsId && Objects.equals(courseName, course.courseName) && Objects.equals(courseDescription, course.courseDescription) && Objects.equals(startDate, course.startDate) && Objects.equals(endDate, course.endDate) && Objects.equals(courseCode, course.courseCode);
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Course course = (Course) o;
+
+        if (courseId != course.courseId) return false;
+        if (!Objects.equals(courseName, course.courseName)) return false;
+        if (!Objects.equals(courseDescription, course.courseDescription))
+            return false;
+        return Objects.equals(courseCode, course.courseCode);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(courseId, courseName, courseDescription, startDate, endDate, instructorId, courseCode, departmentId, courseMaterialsId);
+        int result = courseId;
+        result = 31 * result + (courseName != null ? courseName.hashCode() : 0);
+        result = 31 * result + (courseDescription != null ? courseDescription.hashCode() : 0);
+        result = 31 * result + (courseCode != null ? courseCode.hashCode() : 0);
+        return result;
     }
+
 
     @Override
     public String toString() {
@@ -117,12 +89,7 @@ public class Course {
                 "courseId=" + courseId +
                 ", courseName='" + courseName + '\'' +
                 ", courseDescription='" + courseDescription + '\'' +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", instructorId=" + instructorId +
                 ", courseCode='" + courseCode + '\'' +
-                ", departmentId=" + departmentId +
-                ", courseMaterialsId=" + courseMaterialsId +
                 '}';
     }
 }

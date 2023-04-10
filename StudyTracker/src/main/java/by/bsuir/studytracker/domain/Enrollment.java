@@ -1,5 +1,6 @@
 package by.bsuir.studytracker.domain;
 
+import java.sql.Date;
 import java.time.Instant;
 import java.util.Objects;
 
@@ -8,14 +9,25 @@ public class Enrollment {
     private int studentId;
     private int courseId;
     private Instant enrollmentDate;
-    private int enrollmentStatus;
+    private String enrollmentStatus;
 
-    public Enrollment(int enrollmentId, int studentId, int courseId, Instant enrollmentDate, int enrollmentStatus) {
+    public Enrollment(int enrollmentId, int studentId, int courseId, Instant enrollmentDate, String enrollmentStatus) {
         this.enrollmentId = enrollmentId;
         this.studentId = studentId;
         this.courseId = courseId;
         this.enrollmentDate = enrollmentDate;
         this.enrollmentStatus = enrollmentStatus;
+    }
+
+    public Enrollment(int studentId, int courseId, Instant enrollmentDate, String enrollmentStatus) {
+        this.studentId = studentId;
+        this.courseId = courseId;
+        this.enrollmentDate = enrollmentDate;
+        this.enrollmentStatus = enrollmentStatus;
+    }
+
+    public Enrollment() {
+
     }
 
     public int getEnrollmentId() {
@@ -50,11 +62,11 @@ public class Enrollment {
         this.enrollmentDate = enrollmentDate;
     }
 
-    public int getEnrollmentStatus() {
+    public String getEnrollmentStatus() {
         return enrollmentStatus;
     }
 
-    public void setEnrollmentStatus(int enrollmentStatus) {
+    public void setEnrollmentStatus(String enrollmentStatus) {
         this.enrollmentStatus = enrollmentStatus;
     }
 

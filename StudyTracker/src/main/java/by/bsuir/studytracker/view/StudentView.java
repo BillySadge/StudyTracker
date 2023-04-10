@@ -1,7 +1,9 @@
 package by.bsuir.studytracker.view;
 
-import by.bsuir.studytracker.application.Encryptor;
-import by.bsuir.studytracker.application.Login;
+import by.bsuir.studytracker.application.utils.Encryptor;
+import by.bsuir.studytracker.dao.StudentDao;
+import by.bsuir.studytracker.dao.connection.PostgresConnectionPool;
+import by.bsuir.studytracker.dao.impl.StudentDaoImpl;
 import by.bsuir.studytracker.domain.Student;
 import by.bsuir.studytracker.exception.ServiceException;
 import by.bsuir.studytracker.service.StudentService;
@@ -9,20 +11,35 @@ import by.bsuir.studytracker.service.impl.StudentServiceImpl;
 
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 import org.apache.commons.lang3.StringUtils;
-import org.mindrot.jbcrypt.BCrypt;
 
 
 public class StudentView {
+    private StudentDao StudentDao;
+
+    {
+        try {
+            StudentDao = new StudentDaoImpl(new PostgresConnectionPool(50));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
     private StudentService studentService;
     private Scanner scanner;
 
+    public StudentView() {
+        this.scanner = new Scanner(System.in);
+        this.studentService = new StudentServiceImpl(StudentDao);
+    }
     private Encryptor encryptor = new Encryptor();
 
     public StudentView(Connection connection) {
-        this.studentService = new StudentServiceImpl(connection);
+        this.studentService = new StudentServiceImpl(StudentDao);
         this.scanner = new Scanner(System.in);
     }
     public void deleteStudent(){
@@ -35,31 +52,26 @@ public class StudentView {
         }
     }
     public void addStudent() {
-        System.out.print("Enter last name: ");
-        String lastName = scanner.nextLine();
         System.out.print("Enter first name: ");
         String firstName = scanner.nextLine();
-        System.out.print("Enter id number: ");
-        String idNumber = scanner.nextLine();
-        System.out.print("Enter complete address: ");
-        String completeAddress = scanner.nextLine();
-        System.out.print("Enter phone number: ");
-        String phoneNumber = scanner.nextLine();
+        System.out.print("Enter last name: ");
+        String lastName = scanner.nextLine();
         System.out.print("Enter email: ");
         String email = scanner.nextLine();
+        System.out.print("Enter phone number: ");
+        String phoneNumber = scanner.nextLine();
+        System.out.print("Enter card id number: ");
+        String idNumber = scanner.nextLine();
         System.out.print("Enter password: ");
         String password = scanner.nextLine();
-//        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
         String hashedPassword = null;
         try {
             hashedPassword = encryptor.encryptString(password);
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
-        System.out.print("Enter account Status: ");
-        int accountStatus = Integer.parseInt(scanner.nextLine());
 
-        Student student = new Student(lastName,firstName,idNumber,completeAddress,phoneNumber,email,hashedPassword,accountStatus);
+        Student student = new Student(firstName,lastName,email,phoneNumber,idNumber,hashedPassword);
 
         try {
             studentService.addStudent(student);
@@ -69,20 +81,76 @@ public class StudentView {
         }
     }
 
+
+    public void updateStudent() {
+        System.out.print("Enter the student ID: ");
+        int studentId = scanner.nextInt();
+        Student student = null;
+        try {
+            student = studentService.findStudentById(studentId);
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        if (student == null) {
+            System.out.println("Student not found.");
+            return;
+        }
+
+        System.out.println("Current student details:");
+        findStudentById(studentId);
+
+        System.out.print("Enter updated first name (leave blank to keep current): ");
+        String firstName = scanner.nextLine();
+        if (!firstName.isEmpty()) {
+            student.setFirstName(firstName);
+        }
+
+        System.out.print("Enter updated last name (leave blank to keep current): ");
+        String lastName = scanner.nextLine();
+        if (!lastName.isEmpty()) {
+            student.setLastName(lastName);
+        }
+
+        System.out.print("Enter updated email (leave blank to keep current): ");
+        String email = scanner.nextLine();
+        if (!email.isEmpty()) {
+            student.setEmailAddress(email);
+        }
+
+        System.out.print("Enter updated phone number (leave blank to keep current): ");
+        String phoneNumber = scanner.nextLine();
+        if (!phoneNumber.isEmpty()) {
+            student.setPhoneNumber(phoneNumber);
+        }
+
+        System.out.print("Enter updated card id number (leave blank to keep current): ");
+        String idNumber = scanner.nextLine();
+        if (!idNumber.isEmpty()) {
+            student.setCardIdNumber(idNumber);
+        }
+
+
+        try {
+            studentService.updateStudent(student);
+            System.out.println("Student updated successfully.");
+        } catch (Exception e) {
+            System.out.println("Error updating student: " + e.getMessage());
+        }
+    }
     public void findAllStudents() throws ServiceException {
          List<Student> students = studentService.findAllStudents();
 
         studentConsoleTable();
         for (Student student : students) {
-            System.out.printf("| %-20s | %-20s | %-20s | %-20s | %-20s | %-20s | %-20s | %-20s |\n",
+            System.out.printf("| %-20s | %-20s | %-20s | %-20s | %-20s | %-20s |\n",
                     student.getStudentId(),
-                    student.getLastName(),
                     student.getFirstName(),
-                    student.getIdNumber(),
-                    student.getCompleteAddress(),
-                    student.getPhoneNumber(),
+                    student.getLastName(),
                     student.getEmailAddress(),
-                    student.getAccount_status()
+                    student.getPhoneNumber(),
+                    student.getCardIdNumber()
             );
         }
     }
@@ -95,15 +163,31 @@ public class StudentView {
         try {
             Student student = studentService.findStudentById(id);
             studentConsoleTable();
-            System.out.printf("| %-20s | %-20s | %-20s | %-20s | %-20s | %-20s | %-20s | %-20s |\n",
+            System.out.printf("| %-20s | %-20s | %-20s | %-20s | %-20s | %-20s |\n",
                     student.getStudentId(),
-                    student.getLastName(),
                     student.getFirstName(),
-                    student.getIdNumber(),
-                    student.getCompleteAddress(),
-                    student.getPhoneNumber(),
+                    student.getLastName(),
                     student.getEmailAddress(),
-                    student.getAccount_status()
+                    student.getPhoneNumber(),
+                    student.getCardIdNumber()
+            );
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public void findStudentById(int id) {
+        try {
+            Student student = studentService.findStudentById(id);
+            studentConsoleTable();
+            System.out.printf("| %-20s | %-20s | %-20s | %-20s | %-20s | %-20s |\n",
+                    student.getStudentId(),
+                    student.getFirstName(),
+                    student.getLastName(),
+                    student.getEmailAddress(),
+                    student.getPhoneNumber(),
+                    student.getCardIdNumber()
             );
         } catch (ServiceException e) {
             throw new RuntimeException(e);
@@ -113,7 +197,7 @@ public class StudentView {
 
 
     private void studentConsoleTable(){
-        String[] headers = { "ID", "Last Name", "First Name", "ID Number", "Address", "Phone Number", "Email", "Account Status" };
+        String[] headers = { "ID", "First Name", "Last Name", "Email", "Phone Number", "Card Id"};
         System.out.print("|");
         for (String header : headers) {
             System.out.printf(" %-20s |", header);
@@ -132,7 +216,6 @@ public class StudentView {
         System.out.println("Enter your password");
         String password = scanner.nextLine();
 
-        String[] result = {id, password};
-        return result;
+        return new String[]{id, password};
     }
 }

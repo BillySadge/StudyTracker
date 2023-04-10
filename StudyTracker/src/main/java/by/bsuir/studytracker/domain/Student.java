@@ -4,56 +4,40 @@ import java.util.Objects;
 
 public class Student {
     private int studentId;
-    private String lastName;
     private String firstName;
-    private String idNumber;
-    private String completeAddress;
-    private String phoneNumber;
+    private String lastName;
     private String emailAddress;
+    private String phoneNumber;
+    private String cardIdNumber;
     private String passwordHash;
-    private int account_status;
 
-    public Student(int studentId, String lastName, String firstName, String idNumber, String completeAddress,
-                   String phoneNumber, String emailAddress, String password, int account_status) {
+    public Student(int studentId, String firstName, String lastName, String emailAddress, String phoneNumber, String cardIdNumber, String passwordHash) {
         this.studentId = studentId;
-        this.lastName = lastName;
         this.firstName = firstName;
-        this.idNumber = idNumber;
-        this.completeAddress = completeAddress;
-        this.phoneNumber = phoneNumber;
+        this.lastName = lastName;
         this.emailAddress = emailAddress;
-        this.passwordHash = password;
-        this.account_status = account_status;
+        this.phoneNumber = phoneNumber;
+        this.cardIdNumber = cardIdNumber;
+        this.passwordHash = passwordHash;
     }
 
-    public Student(String lastName, String firstName, String idNumber, String completeAddress, String phoneNumber,
-                   String emailAddress, String password, int account_status) {
-        this.lastName = lastName;
+
+    public Student(String firstName, String lastName, String emailAddress, String phoneNumber, String cardIdNumber, String passwordHash) {
         this.firstName = firstName;
-        this.idNumber = idNumber;
-        this.completeAddress = completeAddress;
-        this.phoneNumber = phoneNumber;
+        this.lastName = lastName;
         this.emailAddress = emailAddress;
-        this.passwordHash = password;
-        this.account_status = account_status;
+        this.phoneNumber = phoneNumber;
+        this.cardIdNumber = cardIdNumber;
+        this.passwordHash = passwordHash;
     }
 
     public Student(){}
-
     public int getStudentId() {
         return studentId;
     }
 
     public void setStudentId(int studentId) {
         this.studentId = studentId;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     public String getFirstName() {
@@ -64,28 +48,12 @@ public class Student {
         this.firstName = firstName;
     }
 
-    public String getIdNumber() {
-        return idNumber;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setIdNumber(String idNumber) {
-        this.idNumber = idNumber;
-    }
-
-    public String getCompleteAddress() {
-        return completeAddress;
-    }
-
-    public void setCompleteAddress(String completeAddress) {
-        this.completeAddress = completeAddress;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmailAddress() {
@@ -96,46 +64,71 @@ public class Student {
         this.emailAddress = emailAddress;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getCardIdNumber() {
+        return cardIdNumber;
+    }
+
+    public void setCardIdNumber(String cardIdNumber) {
+        this.cardIdNumber = cardIdNumber;
+    }
+
     public String getPasswordHash() {
         return passwordHash;
     }
 
-    public void setPasswordHash(String password) {
-        this.passwordHash = password;
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 
-    public int getAccount_status() {
-        return account_status;
-    }
-
-    public void setAccount_status(int account_status) {
-        this.account_status = account_status;
-    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Student student)) return false;
-        return studentId == student.studentId && account_status == student.account_status && Objects.equals(lastName, student.lastName) && Objects.equals(firstName, student.firstName) && Objects.equals(idNumber, student.idNumber) && Objects.equals(completeAddress, student.completeAddress) && Objects.equals(phoneNumber, student.phoneNumber) && Objects.equals(emailAddress, student.emailAddress) && Objects.equals(passwordHash, student.passwordHash);
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Student student = (Student) o;
+
+        if (studentId != student.studentId) return false;
+        if (!Objects.equals(firstName, student.firstName)) return false;
+        if (!Objects.equals(lastName, student.lastName)) return false;
+        if (!Objects.equals(emailAddress, student.emailAddress))
+            return false;
+        if (!Objects.equals(phoneNumber, student.phoneNumber)) return false;
+        if (!Objects.equals(cardIdNumber, student.cardIdNumber))
+            return false;
+        return Objects.equals(passwordHash, student.passwordHash);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(studentId, lastName, firstName, idNumber, completeAddress, phoneNumber, emailAddress, passwordHash, account_status);
+        int result = studentId;
+        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
+        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+        result = 31 * result + (emailAddress != null ? emailAddress.hashCode() : 0);
+        result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
+        result = 31 * result + (cardIdNumber != null ? cardIdNumber.hashCode() : 0);
+        result = 31 * result + (passwordHash != null ? passwordHash.hashCode() : 0);
+        return result;
     }
 
     @Override
     public String toString() {
         return "Student{" +
                 "studentId=" + studentId +
-                ", lastName='" + lastName + '\'' +
                 ", firstName='" + firstName + '\'' +
-                ", idNumber='" + idNumber + '\'' +
-                ", completeAddress='" + completeAddress + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
+                ", lastName='" + lastName + '\'' +
                 ", emailAddress='" + emailAddress + '\'' +
-                ", password='" + passwordHash + '\'' +
-                ", account_status=" + account_status +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", cardIdNumber='" + cardIdNumber + '\'' +
+                ", passwordHash='" + passwordHash + '\'' +
                 '}';
     }
 }

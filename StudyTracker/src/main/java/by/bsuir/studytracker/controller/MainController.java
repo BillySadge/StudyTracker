@@ -8,17 +8,28 @@ import java.sql.Connection;
 public class MainController {
 
     private MenuView menuView;
-    public MainController(Connection connection) {
-        this.menuView = new MenuView(connection);
-    }
 
+    public MainController() {
+        this.menuView = new MenuView();
+    }
 
     public void displayAdminMenu(){
         menuView.displayAdminMenu();
     }
 
+    public void displayInstructorMenu(){
+        menuView.displayInstructorMenu();
+    }
+    public void displayStudentMenu(){
+        menuView.displayStudentMenu();
+    }
+
+
     public String[] login(){
         return menuView.loginForm();
     }
+
+
+
 
 }

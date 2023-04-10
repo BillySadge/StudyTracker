@@ -13,10 +13,12 @@ import java.util.List;
 
 public class StudentServiceImpl implements StudentService {
 
-    private StudentDao studentDao;
-    public StudentServiceImpl(Connection connection) {
-        this.studentDao = new StudentDaoImpl(connection);
+    private final StudentDao studentDao;
+
+    public StudentServiceImpl(StudentDao studentDao) {
+        this.studentDao = studentDao;
     }
+
     @Override
     public void addStudent(Student student) throws ServiceException {
         try {
@@ -25,6 +27,16 @@ public class StudentServiceImpl implements StudentService {
             throw new ServiceException(e);
         }
     }
+
+    @Override
+    public void updateStudent(Student student) throws ServiceException {
+        try {
+            studentDao.updateStudent(student);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
     @Override
     public List<Student> findAllStudents() throws ServiceException{
         try {

@@ -1,4 +1,4 @@
-package by.bsuir.studytracker.application;
+package by.bsuir.studytracker.application.utils;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
