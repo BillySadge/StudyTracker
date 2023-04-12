@@ -3,13 +3,11 @@ package by.bsuir.studytracker.domain;
 import jakarta.persistence.*;
 
 
-import org.springframework.lang.NonNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Pattern;
+
 import java.util.Collection;
 import java.util.List;
 
