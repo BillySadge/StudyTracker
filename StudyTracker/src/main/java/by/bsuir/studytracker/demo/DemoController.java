@@ -12,15 +12,10 @@ public class DemoController {
 
 
     @GetMapping
-//    @PreAuthorize(value = "hasClaim('role', 'ADMIN')")
     public ResponseEntity<String> sayHello(){
         return ResponseEntity.ok("hello from secured endpoint");
     }
 
 
 
-    @GetMapping("/home")
-    public ResponseEntity<String> sye(){
-        return ResponseEntity.ok("hello from admin secured endpoint");
-    }
 }

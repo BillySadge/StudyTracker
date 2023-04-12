@@ -30,7 +30,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests()
                 .requestMatchers("/api/auth/**")
                 .permitAll()
-                .requestMatchers("/api/demo-controller/home")
+                .requestMatchers("/api/admin/**")
                 .hasAuthority("ADMIN")
                 .anyRequest()
                 .authenticated()

@@ -33,7 +33,6 @@ public class AuthenticationController {
             }
             else{
                 return ResponseEntity.ok(registeredUser);
-
             }
         }else{
             String errorMessage = "Invalid email address";
