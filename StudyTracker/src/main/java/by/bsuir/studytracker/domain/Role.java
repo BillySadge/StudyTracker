@@ -1,2 +1,7 @@
-package by.bsuir.studytracker.domain;public enum Role {
+package by.bsuir.studytracker.domain;
+
+public enum Role {
+
+    USER,
+    ADMIN
 }
